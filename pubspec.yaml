@@ -45,13 +45,14 @@ dependencies:
   path_provider: ^2.0.0
   path: ^1.8.0
 
-  #  meta: ^1.7.0
+  # required depend for bloc
   equatable: ^2.0.3
 
   google_fonts: ^2.1.0
   fluttertoast: ^8.0.7
   pull_to_refresh: ^2.0.0
   flutter_spinkit: ^5.0.0
+  permission_handler: ^6.1.1
 
 dev_dependencies:
   flutter_test:

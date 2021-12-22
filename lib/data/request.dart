@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart' as dio;
 import 'package:my_food/data/repo.dart';
 
