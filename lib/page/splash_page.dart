@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_food/bloc/meal/meal_bloc.dart';
 import 'package:my_food/common/styles.dart';
 
 class SplashPage extends StatefulWidget {
@@ -9,6 +11,15 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  late MealBloc _bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = BlocProvider.of<MealBloc>(context);
+    _bloc.add(const MealSearchEvent(keyword: "Chi"));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

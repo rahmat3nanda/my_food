@@ -4,15 +4,16 @@ class API {
   _Meal meal = _Meal();
   _Option option = _Option();
 
-  static const String baseUrl =  _baseUrl;
+  static const String baseUrl = _baseUrl;
 }
 
-class _Meal{
+class _Meal {
   final String search = "search.php";
   final String filter = "filter.php";
+  final String detail = "lookup.php";
 }
 
-class _Option{
+class _Option {
   final String categories = "categories.php";
   final String list = "list.php";
 }

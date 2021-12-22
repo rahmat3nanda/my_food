@@ -16,10 +16,34 @@ class Request {
   }
 }
 
-class _Meal{
+class _Meal {
+  Future<dio.Response> search({required String keyword}) {
+    return _repo.meal.search(param: {"s": keyword});
+  }
 
+  Future<dio.Response> filter({
+    String? category,
+    String? area,
+    String? ingredient,
+  }) {
+    return _repo.meal.filter(param: {
+      if (category != null) "c": category,
+      if (area != null) "a": area,
+      if (ingredient != null) "i": ingredient,
+    });
+  }
+
+  Future<dio.Response> detail(String id) {
+    return _repo.meal.detail(param: {"i": id});
+  }
 }
 
-class _Option{
+class _Option {
+  Future<dio.Response> list({required bool isArea}) {
+    return _repo.option.list(param: {(isArea ? "a" : "i"): "list"});
+  }
 
+  Future<dio.Response> categories() {
+    return _repo.option.categories();
+  }
 }

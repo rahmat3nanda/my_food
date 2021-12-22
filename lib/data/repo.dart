@@ -31,6 +31,13 @@ class _Meal {
       param: param,
     );
   }
+
+  Future<dio.Response> detail({required Map<String, dynamic> param}) async {
+    return await _dio.get(
+      url: _api.meal.detail,
+      param: param,
+    );
+  }
 }
 
 class _Option {
