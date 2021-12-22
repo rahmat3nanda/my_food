@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_food/bloc/favorite/favorite_bloc.dart';
 import 'package:my_food/bloc/meal/meal_bloc.dart';
 import 'package:my_food/bloc/option/option_bloc.dart';
 import 'package:my_food/common/constans.dart';
@@ -18,6 +19,11 @@ class MyFood extends StatelessWidget {
         ),
         BlocProvider<OptionBloc>(
           create: (BuildContext context) => OptionBloc(OptionInitialState()),
+        ),
+        BlocProvider<FavoriteBloc>(
+          create: (BuildContext context) => FavoriteBloc(
+            FavoriteInitialState(),
+          ),
         ),
       ],
       child: MaterialApp(

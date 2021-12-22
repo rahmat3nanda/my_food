@@ -681,14 +681,260 @@ class $IngredientsTable extends Ingredients
   }
 }
 
+class Favorite extends DataClass implements Insertable<Favorite> {
+  final int id;
+  final String idMeal;
+  final String name;
+  final String image;
+  Favorite(
+      {required this.id,
+      required this.idMeal,
+      required this.name,
+      required this.image});
+  factory Favorite.fromData(Map<String, dynamic> data, {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return Favorite(
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      idMeal: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id_meal'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      image: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}image'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['id_meal'] = Variable<String>(idMeal);
+    map['name'] = Variable<String>(name);
+    map['image'] = Variable<String>(image);
+    return map;
+  }
+
+  FavoritesCompanion toCompanion(bool nullToAbsent) {
+    return FavoritesCompanion(
+      id: Value(id),
+      idMeal: Value(idMeal),
+      name: Value(name),
+      image: Value(image),
+    );
+  }
+
+  factory Favorite.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Favorite(
+      id: serializer.fromJson<int>(json['id']),
+      idMeal: serializer.fromJson<String>(json['idMeal']),
+      name: serializer.fromJson<String>(json['name']),
+      image: serializer.fromJson<String>(json['image']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'idMeal': serializer.toJson<String>(idMeal),
+      'name': serializer.toJson<String>(name),
+      'image': serializer.toJson<String>(image),
+    };
+  }
+
+  Favorite copyWith({int? id, String? idMeal, String? name, String? image}) =>
+      Favorite(
+        id: id ?? this.id,
+        idMeal: idMeal ?? this.idMeal,
+        name: name ?? this.name,
+        image: image ?? this.image,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Favorite(')
+          ..write('id: $id, ')
+          ..write('idMeal: $idMeal, ')
+          ..write('name: $name, ')
+          ..write('image: $image')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, idMeal, name, image);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Favorite &&
+          other.id == this.id &&
+          other.idMeal == this.idMeal &&
+          other.name == this.name &&
+          other.image == this.image);
+}
+
+class FavoritesCompanion extends UpdateCompanion<Favorite> {
+  final Value<int> id;
+  final Value<String> idMeal;
+  final Value<String> name;
+  final Value<String> image;
+  const FavoritesCompanion({
+    this.id = const Value.absent(),
+    this.idMeal = const Value.absent(),
+    this.name = const Value.absent(),
+    this.image = const Value.absent(),
+  });
+  FavoritesCompanion.insert({
+    this.id = const Value.absent(),
+    required String idMeal,
+    required String name,
+    required String image,
+  })  : idMeal = Value(idMeal),
+        name = Value(name),
+        image = Value(image);
+  static Insertable<Favorite> custom({
+    Expression<int>? id,
+    Expression<String>? idMeal,
+    Expression<String>? name,
+    Expression<String>? image,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (idMeal != null) 'id_meal': idMeal,
+      if (name != null) 'name': name,
+      if (image != null) 'image': image,
+    });
+  }
+
+  FavoritesCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? idMeal,
+      Value<String>? name,
+      Value<String>? image}) {
+    return FavoritesCompanion(
+      id: id ?? this.id,
+      idMeal: idMeal ?? this.idMeal,
+      name: name ?? this.name,
+      image: image ?? this.image,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (idMeal.present) {
+      map['id_meal'] = Variable<String>(idMeal.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (image.present) {
+      map['image'] = Variable<String>(image.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FavoritesCompanion(')
+          ..write('id: $id, ')
+          ..write('idMeal: $idMeal, ')
+          ..write('name: $name, ')
+          ..write('image: $image')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FavoritesTable extends Favorites
+    with TableInfo<$FavoritesTable, Favorite> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $FavoritesTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _idMealMeta = const VerificationMeta('idMeal');
+  @override
+  late final GeneratedColumn<String?> idMeal = GeneratedColumn<String?>(
+      'id_meal', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _imageMeta = const VerificationMeta('image');
+  @override
+  late final GeneratedColumn<String?> image = GeneratedColumn<String?>(
+      'image', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, idMeal, name, image];
+  @override
+  String get aliasedName => _alias ?? 'favorites';
+  @override
+  String get actualTableName => 'favorites';
+  @override
+  VerificationContext validateIntegrity(Insertable<Favorite> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('id_meal')) {
+      context.handle(_idMealMeta,
+          idMeal.isAcceptableOrUnknown(data['id_meal']!, _idMealMeta));
+    } else if (isInserting) {
+      context.missing(_idMealMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('image')) {
+      context.handle(
+          _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
+    } else if (isInserting) {
+      context.missing(_imageMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Favorite map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return Favorite.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $FavoritesTable createAlias(String alias) {
+    return $FavoritesTable(_db, alias);
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $AreasTable areas = $AreasTable(this);
   late final $CategoriesTable categories = $CategoriesTable(this);
   late final $IngredientsTable ingredients = $IngredientsTable(this);
+  late final $FavoritesTable favorites = $FavoritesTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [areas, categories, ingredients];
+      [areas, categories, ingredients, favorites];
 }

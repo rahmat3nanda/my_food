@@ -36,6 +36,17 @@ class Ingredients extends Table {
   TextColumn get type => text()();
 }
 
+@DataClassName("Favorite")
+class Favorites extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  TextColumn get idMeal => text()();
+
+  TextColumn get name => text()();
+
+  TextColumn get image => text()();
+}
+
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
@@ -44,7 +55,7 @@ LazyDatabase _openConnection() {
   });
 }
 
-@DriftDatabase(tables: [Areas, Categories, Ingredients])
+@DriftDatabase(tables: [Areas, Categories, Ingredients, Favorites])
 class Database extends _$Database {
   Database() : super(_openConnection());
 
@@ -53,9 +64,11 @@ class Database extends _$Database {
 
   Future<List<Area>> get getAreas => select(areas).get();
 
-  Future<List<Category>> get getCategory => select(categories).get();
+  Future<List<Category>> get getCategories => select(categories).get();
 
-  Future<List<Ingredient>> get getIngredient => select(ingredients).get();
+  Future<List<Ingredient>> get getIngredients => select(ingredients).get();
+
+  Future<List<Favorite>> get getFavorites => select(favorites).get();
 
   Future<int> insertArea(AreasCompanion entry) {
     return into(areas).insert(entry);
@@ -67,6 +80,10 @@ class Database extends _$Database {
 
   Future<int> insertIngredient(IngredientsCompanion entry) {
     return into(ingredients).insert(entry);
+  }
+
+  Future<int> insertFavorite(FavoritesCompanion entry) {
+    return into(favorites).insert(entry);
   }
 
   Future insertAreas(List<AreasCompanion> entries) async {
@@ -85,5 +102,15 @@ class Database extends _$Database {
     await batch((batch) {
       batch.insertAll(ingredients, entries);
     });
+  }
+
+  Future insertFavorites(List<FavoritesCompanion> entries) async {
+    await batch((batch) {
+      batch.insertAll(favorites, entries);
+    });
+  }
+
+  Future<int> deleteFavorite(int id) {
+    return (delete(favorites)..where((t) => t.id.equals(id))).go();
   }
 }
